@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import swaggerUIConstructor, {presets} from "./swagger-ui"
+import swaggerUIConstructor from "./swagger-ui"
 export default class SwaggerUI extends React.Component {
   constructor (props) {
     super(props)
@@ -14,7 +14,7 @@ export default class SwaggerUI extends React.Component {
       spec: this.props.spec,
       url: this.props.url,
       defaultModelsExpandDepth: this.props.defaultModelsExpandDepth,
-      presets: [presets.apis,...this.props.presets],
+      presets: [swaggerUIConstructor.presets.apis,...this.props.presets],
       requestInterceptor: this.requestInterceptor,
       responseInterceptor: this.responseInterceptor,
       onComplete: this.onComplete,

@@ -132,6 +132,7 @@ module.exports = {
             "version": "^7.11.2"
           }
         ],
+        "@babel/plugin-transform-modules-commonjs",
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-optional-chaining",
         [

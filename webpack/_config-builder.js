@@ -51,17 +51,9 @@ export default function buildConfig(
   },
   customConfig
 ) {
-  const gitInfo = getRepoInfo()
-
   var plugins = [
     new webpack.DefinePlugin({
-      buildInfo: JSON.stringify({
-        PACKAGE_VERSION: pkg.version,
-        GIT_COMMIT: gitInfo.hash,
-        GIT_DIRTY: gitInfo.dirty,
-        HOSTNAME: os.hostname(),
-        BUILD_TIME: new Date().toUTCString(),
-      }),
+      buildInfo: getBuildInfo(),
     }),
   ]
 
@@ -160,3 +152,15 @@ export default function buildConfig(
 
   return completeConfig
 }
+
+export function getBuildInfo() {
+  const gitInfo = getRepoInfo()
+  return JSON.stringify({
+    PACKAGE_VERSION: pkg.version,
+    GIT_COMMIT: gitInfo.hash,
+    GIT_DIRTY: gitInfo.dirty,
+    HOSTNAME: os.hostname(),
+    BUILD_TIME: new Date().toUTCString(),
+  })
+}
+

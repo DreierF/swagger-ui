@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
 // eslint-disable-next-line no-undef
 const { GIT_DIRTY, GIT_COMMIT, PACKAGE_VERSION, HOSTNAME, BUILD_TIME } = buildInfo
 
-export default function SwaggerUI(opts) {
+function SwaggerUI(opts) {
 
   win.versions = win.versions || {}
   win.versions.swaggerUi = {
@@ -191,10 +191,18 @@ export default function SwaggerUI(opts) {
   return system
 }
 
-// Add presets
-SwaggerUI.presets = {
+const presets = {
   apis: ApisPreset,
 }
 
+// Add presets
+SwaggerUI.presets = presets
+
 // All Plugins
 SwaggerUI.plugins = AllPlugins
+
+export {
+  SwaggerUI as default,
+  presets as presets,
+  AllPlugins as plugins
+}

@@ -4,4 +4,8 @@ module.exports = {
   rootDir: path.join(__dirname, '..', '..'),
   testEnvironment: 'jsdom',
   testMatch: ['**/test/build-artifacts/es-bundle-core.js'],
+  transform: {
+    '\\.jsx?$': 'babel-jest'
+  },
+  transformIgnorePatterns: []
 };
