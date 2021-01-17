@@ -4,16 +4,13 @@
 
 import path from "path"
 import os from "os"
-import fs from "fs"
-import deepExtend from "deep-extend"
+import merge from "lodash/merge"
 import webpack from "webpack"
 import TerserPlugin from "terser-webpack-plugin"
+import nodeExternals from "webpack-node-externals"
 
 import { getRepoInfo } from "./_helpers"
 import pkg from "../package.json"
-const nodeModules = fs.readdirSync("node_modules").filter(function(x) {
-  return x !== ".bin"
-})
 
 const projectBasePath = path.join(__dirname, "../")
 
@@ -65,7 +62,7 @@ export default function buildConfig(
     }),
   ]
 
-  const completeConfig = deepExtend(
+  const completeConfig = merge(
     {},
     {
       mode: "production",
@@ -98,19 +95,7 @@ export default function buildConfig(
             buffertools: true,
             esprima: true,
           }
-        : (context, request, cb) => {
-            // webpack injects some stuff into the resulting file,
-            // these libs need to be pulled in to keep that working.
-            var exceptionsForWebpack = ["ieee754", "base64-js"]
-            if (
-              nodeModules.indexOf(request) !== -1 ||
-              exceptionsForWebpack.indexOf(request) !== -1
-            ) {
-              cb(null, "commonjs " + request)
-              return
-            }
-            cb()
-          },
+        : nodeExternals(),
 
       resolve: {
         modules: [path.join(projectBasePath, "./src"), "node_modules"],
@@ -120,7 +105,10 @@ export default function buildConfig(
         alias: {
           "@babel/runtime-corejs3": path.resolve(__dirname, "..", "node_modules/@babel/runtime-corejs3"),
           "js-yaml": path.resolve(__dirname, "..", "node_modules/js-yaml"),
-          "lodash": path.resolve(__dirname, "..", "node_modules/lodash")
+          "lodash": path.resolve(__dirname, "..", "node_modules/lodash"),
+          "lodash.debounce": path.resolve(__dirname, "..", "node_modules/lodash/debounce"),
+          // Has the same API but does not rely on buffer polyfill
+          "deep-extend": path.resolve(__dirname, "..", "node_modules/lodash/merge")
         },
       },
 

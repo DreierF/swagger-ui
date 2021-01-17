@@ -1,4 +1,4 @@
-import deepExtend from "deep-extend"
+import merge from "lodash/merge"
 
 import System from "./system"
 import ApisPreset from "./presets/apis"
@@ -91,14 +91,14 @@ export default function SwaggerUI(opts) {
   const domNode = opts.domNode
   delete opts.domNode
 
-  const constructorConfig = deepExtend({}, defaults, opts, queryConfig)
+  const constructorConfig = merge({}, defaults, opts, queryConfig)
 
   const storeConfigs = {
     system: {
       configs: constructorConfig.configs
     },
     plugins: constructorConfig.presets,
-    state: deepExtend({
+    state: merge({
       layout: {
         layout: constructorConfig.layout,
         filter: constructorConfig.filter
@@ -139,7 +139,7 @@ export default function SwaggerUI(opts) {
 
   const downloadSpec = (fetchedConfig) => {
     let localConfig = system.specSelectors.getLocalConfig ? system.specSelectors.getLocalConfig() : {}
-    let mergedConfig = deepExtend({}, localConfig, constructorConfig, fetchedConfig || {}, queryConfig)
+    let mergedConfig = merge({}, localConfig, constructorConfig, fetchedConfig || {}, queryConfig)
 
     // deep extend mangles domNode, we need to set it manually
     if(domNode) {

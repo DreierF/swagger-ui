@@ -1,7 +1,7 @@
 import React from "react"
 import { createStore, applyMiddleware, bindActionCreators, compose } from "redux"
 import Im, { fromJS, Map } from "immutable"
-import deepExtend from "deep-extend"
+import merge from "lodash/merge"
 import { combineReducers } from "redux-immutable"
 import serializeError from "serialize-error"
 import assignDeep from "@kyleshockey/object-assign-deep"
@@ -32,7 +32,7 @@ function createStoreWithMiddleware(rootReducer, initialState, getSystem) {
 export default class Store {
 
   constructor(opts={}) {
-    deepExtend(this, {
+    merge(this, {
       state: {},
       plugins: [],
       system: {
@@ -304,7 +304,7 @@ export default class Store {
 
   getMapDispatchToProps(extras) {
     return (dispatch) => {
-      return deepExtend({}, this.getWrappedAndBoundActions(dispatch), this.getFn(), extras)
+      return merge({}, this.getWrappedAndBoundActions(dispatch), this.getFn(), extras)
     }
   }
 
@@ -410,7 +410,7 @@ function systemExtend(dest={}, src={}) {
     }
   }
 
-  return deepExtend(dest, src)
+  return merge(dest, src)
 }
 
 function buildReducer(states) {
